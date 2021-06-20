@@ -42,14 +42,25 @@ export default function useCor({ keys = [], onChange, defaultValues }: TCorProps
   }, []);
 
 
-  function c(key: string, newValue?: any) {
-    if (arguments?.length > 1) {
-      window.Cor[key] = newValue
+  function c(action: string | any) {
+    if (typeof action === 'string') {
+      return window.Cor[action]
 
-      const corEvent = new CustomEvent('Cor', { detail: [key] });
-      window.dispatchEvent(corEvent);
     } else {
-      return window.Cor[key]
+      const keys = Object.keys(action)
+      if (!keys || keys.length === 0) return
+      for (const key of keys) {
+        try {
+          window.Cor[key] = action[key]
+
+        } catch (error) {
+          console.log("error setting key", { action, error })
+        }
+
+      }
+
+      const corEvent = new CustomEvent('Cor', { detail: keys });
+      window.dispatchEvent(corEvent);
     }
   }
 
