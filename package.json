@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -23,6 +23,10 @@
     "type": "git",
     "url": "https://github.com/varinliali/state-cor.git"
   },
+  "keywords": [
+    "React",
+    "State Management"
+  ],
   "peerDependencies": {},
   "husky": {
     "hooks": {
