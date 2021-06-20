@@ -19,6 +19,10 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/varinliali/state-cor.git"
+  },
   "peerDependencies": {},
   "husky": {
     "hooks": {
