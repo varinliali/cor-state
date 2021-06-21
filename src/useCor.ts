@@ -27,43 +27,43 @@ export default function useCor({ keys = [], onChange, defaultValues }: TCorProps
           window.Cor[key] = defaultValues[key];
         }
       }
-
       triggerRerender((prev) => !prev);
     }
 
-    window.addEventListener('Cor', ({ detail }: any) => {
-      if (!detail) return;
-
-      if (keys.some((key) => detail.includes(key))) {
-        triggerRerender((prev) => !prev);
-        onChange && onChange(detail);
-      }
-    });
+    window.addEventListener('Cor', onMessageReceived);
+    return () => window.removeEventListener("Cor", onMessageReceived)
   }, []);
 
+
+
+  function onMessageReceived({ detail }: any) {
+    if (!detail) return;
+
+    if (keys.some((key) => detail.includes(key))) {
+      triggerRerender((prev) => !prev);
+      onChange && onChange(detail);
+    }
+  }
 
   function c(action: string | any) {
     if (typeof action === 'string') {
       return window.Cor[action]
-
     } else {
-      const keys = Object.keys(action)
-      if (!keys || keys.length === 0) return
-      for (const key of keys) {
-        try {
+      try {
+        const keys = Object.keys(action)
+        if (!keys || keys.length === 0) return
+        for (const key of keys) {
           window.Cor[key] = action[key]
-
-        } catch (error) {
-          console.log("error setting key", { action, error })
         }
 
+        const corEvent = new CustomEvent('Cor', { detail: keys });
+        window.dispatchEvent(corEvent);
       }
-
-      const corEvent = new CustomEvent('Cor', { detail: keys });
-      window.dispatchEvent(corEvent);
+      catch (error) {
+        console.log("error setting key", { action, error })
+      }
     }
   }
-
 
   return { flag, c };
 }
