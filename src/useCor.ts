@@ -9,7 +9,7 @@ type ChangeKey = string
 type TCorProps = {
   keys: ChangeKey[];
   onChange?: (keys: ChangeKey[]) => void;
-  defaultValues: any;
+  defaultValues?: any;
 }
 
 export default function useCor({ keys = [], onChange, defaultValues }: TCorProps) {
